@@ -1,0 +1,46 @@
+[
+  {
+    "id": "df736503-8874-4ef2-aca0-7b3ff266bb72",
+    "productName": "めちゃくちゃ可愛いTシャツ",
+    "brandName": "まるお",
+    "platformType": "rakuten",
+    "productUrl": "https://test.jp",
+    "stockStatus": "in_stock",
+    "stockCount": 50,
+    "note": "",
+    "updatedAt": "2026-03-18T08:03:34.878Z"
+  },
+  {
+    "id": "prod-001",
+    "productName": "うどん",
+    "brandName": "Lumiere",
+    "platformType": "rakuten",
+    "productUrl": "https://example.com/rakuten/facemask",
+    "stockStatus": "in_stock",
+    "stockCount": 120,
+    "note": "季節キャンペーン対象。訴求しやすい定番商品です。",
+    "updatedAt": "2026-03-18T07:48:41.620Z"
+  },
+  {
+    "id": "prod-002",
+    "productName": "コードレス ハンディブレンダー",
+    "brandName": "KITCHEN LAB",
+    "platformType": "amazon",
+    "productUrl": "https://example.com/amazon/blender",
+    "stockStatus": "low_stock",
+    "stockCount": 8,
+    "note": "今週分は残り少なめ。広告出稿時は在庫数に注意。",
+    "updatedAt": "2026-03-17T10:30:00.000Z"
+  },
+  {
+    "id": "prod-003",
+    "productName": "軽量ビジネスリュック",
+    "brandName": "Urban Field",
+    "platformType": "rakuten",
+    "productUrl": "https://example.com/rakuten/backpack",
+    "stockStatus": "out_of_stock",
+    "stockCount": 0,
+    "note": "次回入荷予定は未定です。",
+    "updatedAt": "2026-03-16T02:15:00.000Z"
+  }
+]
