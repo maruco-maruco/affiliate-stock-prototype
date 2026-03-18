@@ -142,7 +142,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative">
+            <div className="relative hidden lg:block">
               <div className="absolute -left-3 top-8 h-14 w-14 rounded-full border-4 border-sky-200/80 sm:-left-5 sm:top-10 sm:h-20 sm:w-20" />
               <div className="absolute right-4 top-[-10px] h-12 w-12 rounded-full border-4 border-amber-200/90 sm:right-6 sm:top-[-14px] sm:h-16 sm:w-16" />
               <div className="absolute bottom-8 left-4 h-8 w-8 rounded-full bg-rose-300/70 blur-sm sm:left-8 sm:h-10 sm:w-10" />
