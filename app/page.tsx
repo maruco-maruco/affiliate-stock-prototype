@@ -65,7 +65,7 @@ export default function HomePage() {
 
         <section className="relative border-b border-slate-900/10 px-4 pt-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <header className="flex flex-wrap items-center justify-between gap-4 py-5">
+            <header className="flex flex-col gap-4 py-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-slate-900/70">
                   Affiliate Stock Club
@@ -75,16 +75,16 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
                 <Link
                   href="/login?role=company"
-                  className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
+                  className="inline-flex h-11 items-center justify-center rounded-full bg-slate-900 px-5 text-sm font-semibold text-white transition hover:bg-slate-700"
                 >
                   企業側ログイン
                 </Link>
                 <Link
                   href="/login?role=affiliate"
-                  className="rounded-full border border-slate-900/20 bg-white/70 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-white"
+                  className="inline-flex h-11 items-center justify-center rounded-full border border-slate-900/20 bg-white/70 px-5 text-sm font-semibold text-slate-900 transition hover:bg-white"
                 >
                   アフィリエイター側ログイン
                 </Link>
@@ -143,37 +143,37 @@ export default function HomePage() {
             </div>
 
             <div className="relative">
-              <div className="absolute -left-5 top-10 h-20 w-20 rounded-full border-4 border-sky-200/80" />
-              <div className="absolute right-6 top-[-14px] h-16 w-16 rounded-full border-4 border-amber-200/90" />
-              <div className="absolute bottom-8 left-8 h-10 w-10 rounded-full bg-rose-300/70 blur-sm" />
+              <div className="absolute -left-3 top-8 h-14 w-14 rounded-full border-4 border-sky-200/80 sm:-left-5 sm:top-10 sm:h-20 sm:w-20" />
+              <div className="absolute right-4 top-[-10px] h-12 w-12 rounded-full border-4 border-amber-200/90 sm:right-6 sm:top-[-14px] sm:h-16 sm:w-16" />
+              <div className="absolute bottom-8 left-4 h-8 w-8 rounded-full bg-rose-300/70 blur-sm sm:left-8 sm:h-10 sm:w-10" />
 
-              <div className="overflow-hidden rounded-[40px] border-[3px] border-white/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.52),rgba(255,255,255,0.22))] p-3 shadow-[0_30px_80px_rgba(40,48,82,0.14)] backdrop-blur">
-                <div className="overflow-hidden rounded-[32px] border-2 border-slate-900/15 bg-[linear-gradient(180deg,#efe5e7_0%,#efe7dc_20%,#f4f0ea_42%,#e7e8f0_70%,#ebe4ef_100%)]">
-                  <div className="flex items-center justify-between border-b-2 border-slate-900/15 px-5 py-4">
+              <div className="overflow-hidden rounded-[28px] border-[3px] border-white/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.52),rgba(255,255,255,0.22))] p-2 shadow-[0_30px_80px_rgba(40,48,82,0.14)] backdrop-blur sm:rounded-[40px] sm:p-3">
+                <div className="overflow-hidden rounded-[22px] border-2 border-slate-900/15 bg-[linear-gradient(180deg,#efe5e7_0%,#efe7dc_20%,#f4f0ea_42%,#e7e8f0_70%,#ebe4ef_100%)] sm:rounded-[32px]">
+                  <div className="flex items-center justify-between border-b-2 border-slate-900/15 px-3 py-3 sm:px-5 sm:py-4">
                     <div className="flex gap-2">
                       <span className="h-3 w-3 rounded-full bg-rose-500" />
                       <span className="h-3 w-3 rounded-full bg-yellow-400" />
                       <span className="h-3 w-3 rounded-full bg-cyan-400" />
                     </div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-900/55">
+                    <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-900/55 sm:text-xs sm:tracking-[0.24em]">
                       Main Visual
                     </div>
                   </div>
 
-                  <div className="relative min-h-[480px] overflow-hidden px-5 py-6">
+                  <div className="relative overflow-hidden px-3 py-4 sm:min-h-[480px] sm:px-5 sm:py-6">
                     <div className="absolute inset-x-0 top-0 h-52 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.72),rgba(255,255,255,0)_62%)]" />
                     <div className="absolute bottom-0 left-0 h-48 w-48 rounded-full bg-sky-100/70 blur-3xl" />
                     <div className="absolute right-0 top-10 h-44 w-44 rounded-full bg-rose-100/70 blur-3xl" />
 
                     <div className="relative z-10 mx-auto max-w-[620px]">
-                      <div className="mb-5 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-900/45">
+                      <div className="mb-4 flex flex-col gap-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-900/45 sm:mb-5 sm:flex-row sm:items-center sm:justify-between sm:text-[11px] sm:tracking-[0.22em]">
                         <span>PC dashboard + mobile view</span>
                         <span>admin / affiliate</span>
                       </div>
 
-                      <div className="relative rounded-[30px] border border-slate-900/15 bg-slate-950 p-3 shadow-[0_24px_60px_rgba(15,23,42,0.22)]">
-                        <div className="rounded-[22px] bg-[#f7f7fb] p-4">
-                          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                      <div className="relative rounded-[24px] border border-slate-900/15 bg-slate-950 p-2.5 shadow-[0_24px_60px_rgba(15,23,42,0.22)] sm:rounded-[30px] sm:p-3">
+                        <div className="rounded-[18px] bg-[#f7f7fb] p-3 sm:rounded-[22px] sm:p-4">
+                          <div className="flex flex-col gap-3 border-b border-slate-200 pb-3 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                               <div className="text-sm font-semibold text-slate-900">
                                 在庫管理ダッシュボード
@@ -182,13 +182,13 @@ export default function HomePage() {
                                 商品登録 / 在庫更新 / メモ編集
                               </div>
                             </div>
-                            <div className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                            <div className="w-fit rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
                               sync active
                             </div>
                           </div>
 
-                          <div className="mt-4 grid gap-4 lg:grid-cols-[180px_1fr]">
-                            <div className="rounded-[20px] border border-slate-200 bg-white p-4">
+                          <div className="mt-4 grid gap-3 sm:gap-4 lg:grid-cols-[180px_1fr]">
+                            <div className="rounded-[16px] border border-slate-200 bg-white p-3 sm:rounded-[20px] sm:p-4">
                               <div className="h-3 w-24 rounded-full bg-slate-900/80" />
                               <div className="mt-4 h-10 rounded-2xl bg-slate-100" />
                               <div className="mt-3 h-10 rounded-2xl bg-slate-100" />
@@ -197,48 +197,48 @@ export default function HomePage() {
                               <div className="mt-4 h-10 rounded-full bg-slate-900" />
                             </div>
 
-                            <div className="rounded-[20px] border border-slate-200 bg-white p-4">
-                              <div className="grid grid-cols-[1.2fr_0.8fr_0.6fr_0.6fr] gap-3 border-b border-slate-100 pb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                            <div className="rounded-[16px] border border-slate-200 bg-white p-3 sm:rounded-[20px] sm:p-4">
+                              <div className="grid grid-cols-[1.2fr_0.8fr_0.6fr] gap-2 border-b border-slate-100 pb-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400 sm:grid-cols-[1.2fr_0.8fr_0.6fr_0.6fr] sm:gap-3 sm:text-[11px] sm:tracking-[0.16em]">
                                 <span>商品名</span>
                                 <span>ブランド</span>
                                 <span>在庫</span>
-                                <span>更新</span>
+                                <span className="hidden sm:block">更新</span>
                               </div>
                               <div className="space-y-3 pt-3">
-                                <div className="grid grid-cols-[1.2fr_0.8fr_0.6fr_0.6fr] gap-3 rounded-2xl bg-slate-50 px-3 py-3">
+                                <div className="grid grid-cols-[1.2fr_0.8fr_0.6fr] gap-2 rounded-2xl bg-slate-50 px-3 py-3 sm:grid-cols-[1.2fr_0.8fr_0.6fr_0.6fr] sm:gap-3">
                                   <div>
                                     <div className="h-3 w-28 rounded-full bg-slate-800" />
                                     <div className="mt-2 h-2.5 w-20 rounded-full bg-slate-300" />
                                   </div>
                                   <div className="h-3 w-16 rounded-full bg-slate-300" />
                                   <div className="h-7 rounded-full bg-emerald-100" />
-                                  <div className="h-3 w-12 rounded-full bg-slate-300" />
+                                  <div className="hidden h-3 w-12 rounded-full bg-slate-300 sm:block" />
                                 </div>
-                                <div className="grid grid-cols-[1.2fr_0.8fr_0.6fr_0.6fr] gap-3 rounded-2xl bg-slate-50 px-3 py-3">
+                                <div className="grid grid-cols-[1.2fr_0.8fr_0.6fr] gap-2 rounded-2xl bg-slate-50 px-3 py-3 sm:grid-cols-[1.2fr_0.8fr_0.6fr_0.6fr] sm:gap-3">
                                   <div>
                                     <div className="h-3 w-24 rounded-full bg-slate-800" />
                                     <div className="mt-2 h-2.5 w-16 rounded-full bg-slate-300" />
                                   </div>
                                   <div className="h-3 w-14 rounded-full bg-slate-300" />
                                   <div className="h-7 rounded-full bg-amber-100" />
-                                  <div className="h-3 w-10 rounded-full bg-slate-300" />
+                                  <div className="hidden h-3 w-10 rounded-full bg-slate-300 sm:block" />
                                 </div>
-                                <div className="grid grid-cols-[1.2fr_0.8fr_0.6fr_0.6fr] gap-3 rounded-2xl bg-slate-50 px-3 py-3">
+                                <div className="grid grid-cols-[1.2fr_0.8fr_0.6fr] gap-2 rounded-2xl bg-slate-50 px-3 py-3 sm:grid-cols-[1.2fr_0.8fr_0.6fr_0.6fr] sm:gap-3">
                                   <div>
                                     <div className="h-3 w-32 rounded-full bg-slate-800" />
                                     <div className="mt-2 h-2.5 w-24 rounded-full bg-slate-300" />
                                   </div>
                                   <div className="h-3 w-12 rounded-full bg-slate-300" />
                                   <div className="h-7 rounded-full bg-rose-100" />
-                                  <div className="h-3 w-12 rounded-full bg-slate-300" />
+                                  <div className="hidden h-3 w-12 rounded-full bg-slate-300 sm:block" />
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        <div className="absolute -bottom-8 right-3 w-[180px] rounded-[30px] border border-slate-900/15 bg-white/90 p-2 shadow-[0_24px_50px_rgba(15,23,42,0.18)] backdrop-blur">
-                          <div className="rounded-[24px] border border-slate-200 bg-white p-3">
+                        <div className="mx-auto mt-4 w-full max-w-[220px] rounded-[26px] border border-slate-900/15 bg-white/90 p-2 shadow-[0_20px_40px_rgba(15,23,42,0.16)] backdrop-blur sm:absolute sm:-bottom-8 sm:right-3 sm:mx-0 sm:mt-0 sm:w-[180px] sm:max-w-none sm:rounded-[30px] sm:shadow-[0_24px_50px_rgba(15,23,42,0.18)]">
+                          <div className="rounded-[22px] border border-slate-200 bg-white p-3 sm:rounded-[24px]">
                             <div className="mx-auto mb-3 h-1.5 w-14 rounded-full bg-slate-200" />
                             <div className="flex items-center justify-between">
                               <div>
