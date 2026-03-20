@@ -122,6 +122,21 @@ export function AffiliateCatalog({ initialProducts, userLabel }: AffiliateCatalo
               <StatusBadge status={product.stockStatus} />
             </div>
 
+            {product.imageUrls.length > 0 ? (
+              <div className="-mx-4 mt-4 overflow-x-auto pb-1">
+                <div className="flex gap-3 px-4">
+                  {product.imageUrls.map((imageUrl, index) => (
+                    <img
+                      key={`${product.id}-${imageUrl}-${index}`}
+                      src={imageUrl}
+                      alt={`${product.productName} の商品画像 ${index + 1}`}
+                      className="h-48 w-40 shrink-0 rounded-2xl border border-slate-200 object-cover"
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
             <dl className="mt-4 space-y-2 rounded-xl bg-slate-50 p-3 text-sm text-slate-600">
               <div className="flex items-center justify-between gap-3">
                 <dt>更新日時</dt>

@@ -10,17 +10,23 @@ export interface ProductFormValues {
   brandName: string;
   platformType: PlatformType;
   productUrl: string;
+  imageUrls: string[];
   stockStatus: StockStatus;
   stockCount: string;
   note: string;
 }
 
+export type ProductFormTextField = Exclude<keyof ProductFormValues, "imageUrls">;
+
 type ProductFormProps = {
   values: ProductFormValues;
   isEditing: boolean;
   isSubmitting: boolean;
+  isUploadingImages: boolean;
   errorMessage: string | null;
-  onChange: (field: keyof ProductFormValues, value: string) => void;
+  onChange: (field: ProductFormTextField, value: string) => void;
+  onImageUpload: (files: FileList | null) => void;
+  onRemoveImage: (index: number) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   onCancel: () => void;
 };
@@ -29,16 +35,24 @@ export function ProductForm({
   values,
   isEditing,
   isSubmitting,
+  isUploadingImages,
   errorMessage,
   onChange,
+  onImageUpload,
+  onRemoveImage,
   onSubmit,
   onCancel,
 }: ProductFormProps) {
   const handleInputChange =
-    (field: keyof ProductFormValues) =>
+    (field: ProductFormTextField) =>
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       onChange(field, event.target.value);
     };
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onImageUpload(event.target.files);
+    event.target.value = "";
+  };
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
@@ -131,6 +145,58 @@ export function ProductForm({
           />
         </label>
 
+        <div className="block">
+          <div className="mb-1 flex items-center justify-between gap-3">
+            <span className="block text-sm font-medium text-slate-700">商品画像</span>
+            <span className="text-xs text-slate-500">最大5枚まで</span>
+          </div>
+          <label className="flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-600 transition hover:border-brand-300 hover:bg-brand-50">
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageChange}
+              className="hidden"
+              disabled={isUploadingImages || values.imageUrls.length >= 5}
+            />
+            {isUploadingImages
+              ? "画像をアップロード中..."
+              : values.imageUrls.length >= 5
+                ? "画像は5枚登録済みです"
+                : "画像を追加する"}
+          </label>
+          <p className="mt-2 text-xs leading-5 text-slate-500">
+            JPEG / PNG / WebP などの画像を登録できます。保存後はアフィリエイター画面でも表示されます。
+          </p>
+
+          {values.imageUrls.length > 0 ? (
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              {values.imageUrls.map((imageUrl, index) => (
+                <div
+                  key={`${imageUrl}-${index}`}
+                  className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+                >
+                  <img
+                    src={imageUrl}
+                    alt={`商品画像 ${index + 1}`}
+                    className="h-32 w-full object-cover"
+                  />
+                  <div className="flex items-center justify-between gap-2 px-3 py-2">
+                    <span className="text-xs font-medium text-slate-500">{index + 1}枚目</span>
+                    <button
+                      type="button"
+                      onClick={() => onRemoveImage(index)}
+                      className="text-xs font-semibold text-rose-600 transition hover:text-rose-700"
+                    >
+                      削除
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
         <label className="block">
           <span className="mb-1 block text-sm font-medium text-slate-700">在庫数（任意）</span>
           <input
@@ -164,7 +230,7 @@ export function ProductForm({
         <div className="flex flex-wrap gap-3">
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isUploadingImages}
             className="rounded-xl bg-brand-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isSubmitting ? "保存中..." : isEditing ? "更新する" : "追加する"}

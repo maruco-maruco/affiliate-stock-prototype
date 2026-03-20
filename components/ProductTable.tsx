@@ -55,6 +55,9 @@ export function ProductTable({
                 <td className="px-6 py-4">
                   <div className="min-w-[220px]">
                     <div className="font-semibold text-slate-900">{product.productName}</div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      画像: {product.imageUrls.length}枚
+                    </div>
                     <a
                       href={product.productUrl}
                       target="_blank"

@@ -3,8 +3,9 @@
 import { FormEvent, useState } from "react";
 
 import { CsvImportPanel } from "@/components/CsvImportPanel";
-import { ProductForm, ProductFormValues } from "@/components/ProductForm";
+import { ProductForm, ProductFormTextField, ProductFormValues } from "@/components/ProductForm";
 import { ProductTable } from "@/components/ProductTable";
+import { MAX_PRODUCT_IMAGES } from "@/lib/constants";
 import { Product } from "@/types/product";
 
 type AdminDashboardProps = {
@@ -24,6 +25,7 @@ function createEmptyFormValues(): ProductFormValues {
     brandName: "",
     platformType: "rakuten",
     productUrl: "",
+    imageUrls: [],
     stockStatus: "in_stock",
     stockCount: "",
     note: "",
@@ -36,6 +38,7 @@ function mapProductToFormValues(product: Product): ProductFormValues {
     brandName: product.brandName,
     platformType: product.platformType,
     productUrl: product.productUrl,
+    imageUrls: product.imageUrls ?? [],
     stockStatus: product.stockStatus,
     stockCount: product.stockCount === null || product.stockCount === undefined ? "" : String(product.stockCount),
     note: product.note,
@@ -55,6 +58,7 @@ export function AdminDashboard({ initialProducts, userLabel }: AdminDashboardPro
   const [formValues, setFormValues] = useState<ProductFormValues>(createEmptyFormValues());
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploadingImages, setIsUploadingImages] = useState(false);
   const [isDeletingId, setIsDeletingId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -64,7 +68,7 @@ export function AdminDashboard({ initialProducts, userLabel }: AdminDashboardPro
     setErrorMessage(null);
   };
 
-  const handleChange = (field: keyof ProductFormValues, value: string) => {
+  const handleChange = (field: ProductFormTextField, value: string) => {
     setFormValues((current) => ({ ...current, [field]: value }));
   };
 
@@ -73,6 +77,57 @@ export function AdminDashboard({ initialProducts, userLabel }: AdminDashboardPro
     setFormValues(mapProductToFormValues(product));
     setErrorMessage(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleImageUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0) {
+      return;
+    }
+
+    const selectedFiles = Array.from(files);
+
+    if (formValues.imageUrls.length + selectedFiles.length > MAX_PRODUCT_IMAGES) {
+      setErrorMessage(`商品画像は最大${MAX_PRODUCT_IMAGES}枚まで登録できます。`);
+      return;
+    }
+
+    setIsUploadingImages(true);
+    setErrorMessage(null);
+
+    try {
+      const formData = new FormData();
+
+      selectedFiles.forEach((file) => {
+        formData.append("files", file);
+      });
+
+      const response = await fetch("/api/uploads/product-images", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "画像アップロードに失敗しました。");
+      }
+
+      setFormValues((current) => ({
+        ...current,
+        imageUrls: [...current.imageUrls, ...(result.imageUrls as string[])],
+      }));
+    } catch (error) {
+      setErrorMessage(normalizeErrorMessage(error));
+    } finally {
+      setIsUploadingImages(false);
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setFormValues((current) => ({
+      ...current,
+      imageUrls: current.imageUrls.filter((_, currentIndex) => currentIndex !== index),
+    }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -198,8 +253,11 @@ export function AdminDashboard({ initialProducts, userLabel }: AdminDashboardPro
             values={formValues}
             isEditing={Boolean(editingId)}
             isSubmitting={isSubmitting}
+            isUploadingImages={isUploadingImages}
             errorMessage={errorMessage}
             onChange={handleChange}
+            onImageUpload={handleImageUpload}
+            onRemoveImage={handleRemoveImage}
             onSubmit={handleSubmit}
             onCancel={resetForm}
           />

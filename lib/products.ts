@@ -2,7 +2,8 @@ import { promises as fs } from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
 
-import { PLATFORM_OPTIONS, STOCK_STATUS_OPTIONS } from "@/lib/constants";
+import { MAX_PRODUCT_IMAGES, PLATFORM_OPTIONS, STOCK_STATUS_OPTIONS } from "@/lib/constants";
+import { PRODUCT_IMAGE_PUBLIC_PATH, deleteStoredProductImages } from "@/lib/image-storage";
 import { Product, ProductInput, PlatformType, StockStatus } from "@/types/product";
 
 function getDataFilePath(): string {
@@ -62,6 +63,42 @@ function isValidHttpUrl(value: string): boolean {
   }
 }
 
+function isValidImageUrl(value: string): boolean {
+  return value.startsWith(`${PRODUCT_IMAGE_PUBLIC_PATH}/`) || isValidHttpUrl(value);
+}
+
+function normalizeImageUrls(value: unknown): { value: string[]; error?: string } {
+  if (value === undefined || value === null) {
+    return { value: [] };
+  }
+
+  if (!Array.isArray(value)) {
+    return { value: [], error: "商品画像の形式が不正です。" };
+  }
+
+  const imageUrls = value.map((item) => sanitizeText(item)).filter(Boolean);
+
+  if (imageUrls.length > MAX_PRODUCT_IMAGES) {
+    return { value: [], error: `商品画像は最大${MAX_PRODUCT_IMAGES}枚まで登録できます。` };
+  }
+
+  const hasInvalidImageUrl = imageUrls.some((imageUrl) => !isValidImageUrl(imageUrl));
+
+  if (hasInvalidImageUrl) {
+    return { value: [], error: "商品画像URLが不正です。" };
+  }
+
+  return { value: imageUrls };
+}
+
+function normalizeStoredProduct(product: Product): Product {
+  return {
+    ...product,
+    imageUrls: Array.isArray(product.imageUrls) ? product.imageUrls.filter(Boolean) : [],
+    note: typeof product.note === "string" ? product.note : "",
+  };
+}
+
 export function validateProductInput(payload: unknown): ValidationResult {
   const errors: string[] = [];
 
@@ -74,6 +111,7 @@ export function validateProductInput(payload: unknown): ValidationResult {
   const brandName = sanitizeText(raw.brandName);
   const productUrl = sanitizeText(raw.productUrl);
   const note = sanitizeText(raw.note);
+  const imageUrlsResult = normalizeImageUrls(raw.imageUrls);
 
   if (!productName) {
     errors.push("商品名は必須です。");
@@ -102,6 +140,10 @@ export function validateProductInput(payload: unknown): ValidationResult {
     errors.push(stockCountResult.error);
   }
 
+  if (imageUrlsResult.error) {
+    errors.push(imageUrlsResult.error);
+  }
+
   if (errors.length > 0) {
     return { success: false, errors };
   }
@@ -114,6 +156,7 @@ export function validateProductInput(payload: unknown): ValidationResult {
       brandName,
       platformType: raw.platformType as PlatformType,
       productUrl,
+      imageUrls: imageUrlsResult.value,
       stockStatus: raw.stockStatus as StockStatus,
       stockCount: stockCountResult.value,
       note,
@@ -145,7 +188,7 @@ async function readProductsFile(): Promise<Product[]> {
   }
 
   const parsed = JSON.parse(fileContent) as Product[];
-  return parsed;
+  return parsed.map(normalizeStoredProduct);
 }
 
 async function writeProductsFile(products: Product[]): Promise<void> {
@@ -178,6 +221,7 @@ export async function createProduct(payload: unknown): Promise<Product> {
   const newProduct: Product = {
     id: randomUUID(),
     ...validation.data,
+    imageUrls: validation.data.imageUrls ?? [],
     note: validation.data.note ?? "",
     updatedAt: now,
   };
@@ -232,6 +276,7 @@ export async function createProducts(payloads: unknown[]): Promise<Product[]> {
   const newProducts: Product[] = successfulResults.map((result) => ({
     id: randomUUID(),
     ...result.data,
+    imageUrls: result.data.imageUrls ?? [],
     note: result.data.note ?? "",
     updatedAt: now,
   }));
@@ -255,15 +300,21 @@ export async function updateProduct(id: string, payload: unknown): Promise<Produ
     return null;
   }
 
+  const previousProduct = products[targetIndex];
+
   const updatedProduct: Product = {
     id,
     ...validation.data,
+    imageUrls: validation.data.imageUrls ?? [],
     note: validation.data.note ?? "",
     updatedAt: new Date().toISOString(),
   };
 
   products[targetIndex] = updatedProduct;
   await writeProductsFile(sortByUpdatedAt(products));
+  await deleteStoredProductImages(
+    previousProduct.imageUrls.filter((imageUrl) => !updatedProduct.imageUrls.includes(imageUrl)),
+  );
 
   return updatedProduct;
 }
@@ -278,6 +329,7 @@ export async function deleteProduct(id: string): Promise<Product | null> {
 
   const nextProducts = products.filter((product) => product.id !== id);
   await writeProductsFile(sortByUpdatedAt(nextProducts));
+  await deleteStoredProductImages(target.imageUrls);
 
   return target;
 }

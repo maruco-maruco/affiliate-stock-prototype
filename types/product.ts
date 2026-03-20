@@ -8,6 +8,7 @@ export interface Product {
   brandName: string;
   platformType: PlatformType;
   productUrl: string;
+  imageUrls: string[];
   stockStatus: StockStatus;
   stockCount?: number | null;
   note: string;
@@ -19,6 +20,7 @@ export interface ProductInput {
   brandName: string;
   platformType: PlatformType;
   productUrl: string;
+  imageUrls?: string[];
   stockStatus: StockStatus;
   stockCount?: number | null;
   note?: string;

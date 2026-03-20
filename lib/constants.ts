@@ -27,3 +27,6 @@ export const PLATFORM_OPTIONS: Array<{
   { value: "rakuten", label: PLATFORM_LABELS.rakuten },
   { value: "amazon", label: PLATFORM_LABELS.amazon },
 ];
+
+export const MAX_PRODUCT_IMAGES = 5;
+export const MAX_PRODUCT_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
